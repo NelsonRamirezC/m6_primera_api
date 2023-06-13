@@ -11,15 +11,39 @@
 
 
     <h1>Busca a tu digimon.</h1>
-    <form action="http://localhost:3000/api/digimon/name">
+    <form action="/api/digimones/name" id="formDigimon">
         <label for="nombre">Nombre:</label>
-        <input type="text" name="nombre">
+        <input type="text" name="name" id="nameDigimon">
         <input type="submit" value="Buscar">
     </form>
 
+    <section>
+        <p id="infoDigimon"></p>
+    </section>
+
 
     <script>
-        
+
+        const mostrarData = (digimon) => {
+            infoDigimon.innerText = `Nombre: ${digimon.name} - Nivel: ${digimon.level}`
+        }
+
+        let formDigimon = document.getElementById("formDigimon");
+        formDigimon.addEventListener("submit", async (event) => {
+            try {
+                event.preventDefault();
+                let response = await fetch("/api/digimones/name?name=" + nameDigimon.value);
+                let data = await response.json();
+                mostrarData(data);
+            } catch (error) {
+                console.log(error);
+            }
+
+
+        })
+
+
+
     </script>
 </body>
 

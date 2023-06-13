@@ -2,15 +2,21 @@ const chalk = require("chalk");
 const http = require("http");
 const digimones = require("./digimon.json");
 const querystring = require("node:querystring");
+const fs = require("fs");
 
 const servidor = http.createServer((req, res) => {
     if (req.url == "/" && req.method == "GET") {
-        res.end("Página principal API Digimones");
+        let pagina = fs.readFileSync(__dirname + "/index.html");
+        res.setHeader("Content-Type", "text/html");
+        res.end(pagina);
     } else if (req.url == "/api/digimones" && req.method == "GET") {
         res.statusCode = 200;
         res.setHeader("Content-Type", "application/json");
         res.end(JSON.stringify(digimones));
-    } else if (req.url.startsWith("/api/digimon/name") && req.method == "GET") {
+    } else if (
+        req.url.startsWith("/api/digimones/name") &&
+        req.method == "GET"
+    ) {
         let arugmentos = querystring.parse(req.url);
         let values = Object.values(arugmentos);
 
